@@ -176,7 +176,7 @@ function portfolio_constraint = read_portfolio_constraint(conn, portfolio_info)
             end
         end
     catch
-        % 忽略任何错误，继续处理原始 T
+        
     end
   
     if ~ismember('constraint_name', T.Properties.VariableNames)
@@ -230,7 +230,7 @@ function portfolio_constraint = read_portfolio_constraint(conn, portfolio_info)
         raw_name = sprintf('%s_%s', char(string(constraint_name_val)), char(string(id_val)));
         portfolio = matlab.lang.makeValidName(raw_name);
 
-        % 若生成的变量名已存在，则追加后缀保证唯一
+        % 若生成的变量名已存在，则追加后缀
         if ismember(portfolio, result.Properties.VariableNames)
             k = 1;
             newname = portfolio;
@@ -343,7 +343,7 @@ function factor_constraint = read_factor_constraint(conn, portfolio_info)
     end
 
     % 移除不需要的列
-    remove_cols = {'id', 'create_time', 'update_time'};
+    remove_cols = {'update_time'};
     for i = 1:length(remove_cols)
         col = remove_cols{i};
         if ismember(col, T.Properties.VariableNames)

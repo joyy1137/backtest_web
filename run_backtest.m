@@ -70,9 +70,7 @@ for i = 1:height(portfolio_info)
         
         fprintf('\n=== 回测投资组合 %d/%d: %s (%s) ===\n', i, height(portfolio_info), portfolio_name, user_name);
         
-        % 构建当前投资组合的数据路径（从输入路径读取）
-        % portfolio_data_path = fullfile(input_path, user_name, portfolio_name);
-       
+      
         % 创建回测工具箱实例
         bt = BacktestToolbox.BacktestToolbox();
         
