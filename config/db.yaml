@@ -1,0 +1,30 @@
+type: "mysql"
+database: "data_prepared_new"
+database2: "portfolio_new"
+table_name: "data_score_dev"
+table_name2: "portfolio_dev"
+chunk_size: 20000
+workers: 4
+user: "prod"
+password: "Abcd1234#"
+host: "rm-bp1o6we7s3o1h76x1to.mysql.rds.aliyuncs.com"
+port: 3306
+
+host2: "rm-bp1o6we7s3o1h76x1to.mysql.rds.aliyuncs.com"
+database3: "data_prepared_new"
+
+user2: "yfr"
+host3: "rm-cn-fhh4gzo9900083vo.rwlb.rds.aliyuncs.com"
+database4: "qlib"
+table_name3: "best_params"
+
+database5: "portfolio_new"
+table_name4: "portfolio_info_dev"
+
+table_name5: "portfolio_info"
+table_name6: "portfolio_constraint"
+
+table_name7: "factor_constraint"
+
+database6: "portfolio_backtest"
+

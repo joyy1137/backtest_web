@@ -1,0 +1,37 @@
+# 存放csv版本所需要的数据
+csv_output_dir: "E:\\qlib_data\\tushare_qlib_data\\csv_data"
+# 存放每日更新需要的csv版本数据
+csv_daily_dir: "E:\\qlib_data\\tushare_qlib_data\\daily"
+
+# 存放qlib二进制数据的路径
+qlib_bin_dir: "E:\\qlib_data\\tushare_qlib_data\\qlib_bin"
+#克隆之后qlib库的存放路径
+qlib_workdir: "E:\\qlib" 
+
+# 训练好的模型存放路径
+# model_path: "E:\\qlib_data\\output\\mlruns\\791798094765178125\\21ab91807eff4e61bee33331ff1c4411\\artifacts\\trained_model"
+model_path: "E:\\qlib-optimizer\\2025\\trained_model"
+
+# 预测出的score文件存放路径
+prediction_output_dir: "E:\\qlib_output\\2"
+
+provider_uri: "E:\\qlib_data\\tushare_qlib_data\\qlib_bin"
+# 临时存放合并后的优化后的权重文件
+# temp_dir: "E:\\qlib-optimizer\\temp"
+tempp_dir: "E:\\qlib-optimizer\\tempp"
+
+# 输出的优化结果存放路径
+processing_data_dir: "E:\\test"
+
+# 模型配置文件路径
+yaml_path: "E:\\qlib-optimizer\\qlib_code\\workflow_config_lightgbm.yaml"
+
+# python 执行路径
+python_exe: "E:\\ProgramData\\anaconda3\\envs\\new_qlib_env\\python.exe"
+
+yaml_matlab: "E:\\YAMLMatlab_0.4.3"
+
+
+
+
+
