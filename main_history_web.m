@@ -3,7 +3,7 @@ currentDir = fileparts(currentFile);
 
 
 addpath(fullfile(currentDir, 'Optimizer_matlab'));	
-% run_optimizer();
+run_optimizer();
 [portfolio_info, ~, ~] = ConfigReader_sql();
 user_names = portfolio_info.user_name;
 
