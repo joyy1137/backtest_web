@@ -151,5 +151,42 @@ catch ME2
     fprintf_log(id2, 'Failed to launch netvalue importer: %s', ME2.message);
 end
 
+db_config = fullfile(currentDir, 'config', 'db.yaml');
+db = ReadYaml(db_config);
+host = db.host3;
+dbname = db.database4;
+username = db.user2;
+password = db.password;
+table_name = db.table_name5;
+% 创建数据库连接
+conn = database(dbname, username, password, ...
+                'com.mysql.cj.jdbc.Driver', ...
+                ['jdbc:mysql://' host '/' dbname]);
+
+if ~isopen(conn)
+    error('数据库连接失败: %s', conn.Message);
+end
+
+try
+    update_sql = sprintf(...
+        "UPDATE %s SET status = 1 WHERE session_id = '%s'", ...
+        table_name, sid);
+    
+    % 执行更新
+    curs = exec(conn, update_sql);
+    
+    if ~isempty(curs.Message)
+        fprintf('更新失败: %s\n', curs.Message);
+    else
+        fprintf('成功更新状态\n');
+    end
+    
+    % 关闭游标
+    close(curs);
+    
+catch ME
+    fprintf('更新数据库状态失败: %s\n', ME.message);
+end
+
 
 fprintf('\n=== 批量回测完成 ===\n');
