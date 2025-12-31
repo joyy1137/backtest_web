@@ -85,8 +85,11 @@ pip install -r requirements.txt
 
 ### 运行回测
 
-在 MATLAB 中执行：
-
+在 MATLAB 中先执行：
+```matlab
+main_history_web
+```
+再执行
 ```matlab
 run_backtest
 ```
