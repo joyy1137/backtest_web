@@ -4,27 +4,37 @@ database2: "portfolio_new"
 table_name: "data_score_dev"
 table_name2: "portfolio_dev"
 chunk_size: 20000
-workers: 4
 user: "prod"
+
+#通用密码
 password: "Abcd1234#"
+
 host: "rm-bp1o6we7s3o1h76x1to.mysql.rds.aliyuncs.com"
 port: 3306
 
 host2: "rm-bp1o6we7s3o1h76x1to.mysql.rds.aliyuncs.com"
 database3: "data_prepared_new"
 
+#回测结果存放数据库用户名
 user2: "yfr"
-host3: "rm-cn-fhh4gzo9900083vo.rwlb.rds.aliyuncs.com"
-database4: "qlib"
-table_name3: "best_params"
 
+#回测结果存放数据库地址
+host3: "rm-cn-fhh4gzo9900083vo.rwlb.rds.aliyuncs.com"
+
+# 回测结果存放数据库名
+database4: "qlib"
+
+#优化的时候存放优化基本信息的数据库名
 database5: "portfolio_new"
+#优化的时候存放优化基本信息的数据表名
 table_name4: "portfolio_info_dev"
 
+#回测的时候读取的从网站上获取的优化基本信息的数据表名
 table_name5: "portfolio_info"
+#回测的时候读取的从网站上获取的优化约束信息的数据表名
 table_name6: "portfolio_constraint"
-
+#回测的时候读取的从网站上获取的因子约束信息的数据表名
 table_name7: "factor_constraint"
-
+#存放回测结果的数据库名
 database6: "portfolio_backtest"
 
