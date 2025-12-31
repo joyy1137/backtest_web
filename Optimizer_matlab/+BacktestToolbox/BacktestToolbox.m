@@ -676,6 +676,7 @@ classdef BacktestToolbox < handle
                 max_dd_by_year = [];
                 vol_by_year = [];
                 trading_days_by_year = [];
+                appended_years = [];
                 
                 % 预先计算组合和基准收益率（用于信息比率计算）
                 portfolio_returns_daily = [];
@@ -773,7 +774,8 @@ classdef BacktestToolbox < handle
                         end
                     end
                 end
-                
+
+
                 % 计算加权平均指标（按交易日数加权）
                 if ~isempty(annual_returns_by_year)
                     total_trading_days = sum(trading_days_by_year);
@@ -797,6 +799,7 @@ classdef BacktestToolbox < handle
                         fprintf('加权平均指标 (按交易日数加权):\n');
                         fprintf('  年化收益率: %.2f%%, 夏普比率: %.2f, 信息比率: %.2f, 最大回撤: %.2f%%, 年化标准差: %.2f%%\n', ...
                             annual_returns, sharpe, info_ratio, max_dd_all * 100, vol * 100);
+                        
                     else
                         % 如果无法加权，使用简单平均
                         annual_returns2 = mean(annual_returns_by_year);
@@ -1020,6 +1023,65 @@ classdef BacktestToolbox < handle
             end
             writetable(export_table, output_path, 'Encoding', 'UTF-8');
             fprintf('CSV文件已导出: %s\n', output_path);
+
+         
+            try
+                if exist('performance_metrics', 'var') && ~isempty(performance_metrics)
+                    % 从 performance_metrics 表中提取对应指标
+                    ar_idx = find(strcmp(performance_metrics.Metric, 'Annual_Return_Pct'), 1);
+                    sh_idx = find(strcmp(performance_metrics.Metric, 'Sharpe_Ratio'), 1);
+                    ir_idx = find(strcmp(performance_metrics.Metric, 'Info_Ratio'), 1);
+                    md_idx = find(strcmp(performance_metrics.Metric, 'Max_Drawdown_Pct'), 1);
+                    vol_idx = find(strcmp(performance_metrics.Metric, 'Annual_Vol_Pct'), 1);
+
+                    if ~isempty(ar_idx)
+                        ar = performance_metrics.Value(ar_idx);
+                    else
+                        ar = NaN;
+                    end
+                    if ~isempty(sh_idx)
+                        sh = performance_metrics.Value(sh_idx);
+                    else
+                        sh = NaN;
+                    end
+                    if ~isempty(ir_idx)
+                        ir = performance_metrics.Value(ir_idx);
+                    else
+                        ir = NaN;
+                    end
+                    if ~isempty(md_idx)
+                        md = performance_metrics.Value(md_idx);
+                    else
+                        md = NaN;
+                    end
+                    if ~isempty(vol_idx)
+                        vol_summary = performance_metrics.Value(vol_idx);
+                    else
+                        vol_summary = NaN;
+                    end
+
+                    % 如果值是 cell（罕见情况），展开
+                    if iscell(ar), ar = ar{1}; end
+                    if iscell(sh), sh = sh{1}; end
+                    if iscell(ir), ir = ir{1}; end
+                    if iscell(md), md = md{1}; end
+                    if iscell(vol_summary), vol_summary = vol_summary{1}; end
+
+                    % 构造单行表格并写入 CSV
+                    perf_row = table(ar, sh, ir, md, vol_summary, {portfolio_name}, {session_seg}, {id_seg}, datetime('now'), ...
+                        'VariableNames', {'annual_return_pct','sharpe_ratio','info_ratio','max_drawdown_pct','annual_vol_pct','portfolio_name','session_id','id','update_time'});
+
+                    perf_csv_path = fullfile(output_dir, sprintf('%s_performance_summary.csv', export_base));
+                    try
+                        writetable(perf_row, perf_csv_path, 'Encoding', 'UTF-8');
+                        fprintf('性能摘要已导出 CSV: %s\n', perf_csv_path);
+                    catch
+                        fprintf('警告: 无法写入性能摘要 CSV: %s\n', perf_csv_path);
+                    end
+                end
+            catch ME
+                fprintf('写入性能摘要 CSV 时出错: %s\n', ME.message);
+            end
             
             % 导出图表
             obj.exportCharts(result_table, portfolio_name, output_dir);

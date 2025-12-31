@@ -151,6 +151,52 @@ catch ME2
     fprintf_log(id2, 'Failed to launch netvalue importer: %s', ME2.message);
 end
 
+try
+    perfScript = fullfile(currentDir, 'import_performance_to_mysql.py');
+    perf_table_name = [uname '_backtest_performance'];
+    cmd3 = sprintf('"%s" "%s" "%s" "%s" "%s"', pythonExe, perfScript, perf_table_name, sid, base_folder);
+    [status3, cmdout3] = system(cmd3);
+    fprintf_log('Performance Python return status: %d', status3);
+    if ~isempty(cmdout3)
+        fprintf_log('Performance Python output:\n%s', cmdout3);
+    end
+    if status3 ~= 0
+        fprintf_log('Running performance python script failed (status=%d).', status3);
+    end
+catch ME3
+    if isprop(ME3, 'identifier') && ~isempty(ME3.identifier)
+        id3 = ME3.identifier;
+    else
+        id3 = 'run_optimizer:performanceImportFail';
+    end
+    fprintf_log(id3, 'Failed to launch performance importer: %s', ME3.message);
+end
+
+
+try
+    contribScript = fullfile(currentDir, 'import_contributions_to_mysql.py');
+    contrib_table = [uname '_contribution'];
+    contrib_weight_table = [uname '_contribution_weight'];
+
+    
+    cmd4 = sprintf('"%s" "%s" "%s" "%s" "%s" "%s"', pythonExe, contribScript, contrib_table, contrib_weight_table, sid, base_folder);
+    [status4, cmdout4] = system(cmd4);
+    fprintf_log('Contribution Python return status: %d', status4);
+    if ~isempty(cmdout4)
+        fprintf_log('Contribution Python output:\n%s', cmdout4);
+    end
+    if status4 ~= 0
+        fprintf_log('Running contribution python script failed (status=%d).', status4);
+    end
+catch ME4
+    if isprop(ME4, 'identifier') && ~isempty(ME4.identifier)
+        id4 = ME4.identifier;
+    else
+        id4 = 'run_optimizer:contribImportFail';
+    end
+    fprintf_log(id4, 'Failed to launch contribution importer: %s', ME4.message);
+end
+
 db_config = fullfile(currentDir, 'config', 'db.yaml');
 db = ReadYaml(db_config);
 host = db.host3;
